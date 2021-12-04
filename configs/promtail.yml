@@ -18,5 +18,18 @@ scrape_configs:
      labels:
       name: loki-canary
       stream: stdout
-      __path__: /out/*.log
-
+      type: sample
+      __path__: /out/canary.log
+ - job_name: debug
+   static_configs:
+   - targets:
+      - localhost
+     labels:
+      name: loki-canary
+      stream: stdout
+      type: debug
+      __path__: /out/debug.log
+   pipeline_stages:
+   - docker:
+   - drop:
+       expression: ".*received invalid.*"
