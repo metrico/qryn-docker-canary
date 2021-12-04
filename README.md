@@ -1,6 +1,6 @@
 <img src='https://user-images.githubusercontent.com/1423657/99822833-f9504780-2b53-11eb-8b28-99484eab6157.png' width=250>
 
-## [cLoki](https://github.com/lmangani/cLoki) Canary
+## [cLoki](https://github.com/lmangani/cLoki) [Canary](https://grafana.com/docs/loki/latest/operations/loki-canary/)
 
 Loki Canary is a standalone app that audits the log-capturing performance of a Grafana Loki cluster.
 
