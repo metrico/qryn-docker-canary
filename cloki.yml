@@ -1,0 +1,13 @@
+version: '2.3'
+
+services:
+  cloki:
+    image: qxip/cloki
+    expose:
+      - 3100
+    ports:
+      - "3100:3100"
+    environment:
+      - CLICKHOUSE_SERVER=clickhouse1
+      - CLICKHOUSE_DB=cloki
+      - CLICKHOUSE_AUTH=default:password

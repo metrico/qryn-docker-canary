@@ -1,0 +1,62 @@
+version: '2.3'
+
+volumes:
+  clickhouse:
+
+services:
+
+  clickhouse1:
+    extends:
+      file: clickhouse-service.yml
+      service: clickhouse
+    user: clickhouse:clickhouse
+    container_name: clickhouse1
+    hostname: clickhouse1
+
+  cloki:
+    extends:
+      file: cloki.yml
+      service: cloki
+    hostname: cloki
+    depends_on:
+      clickhouse1:
+        condition: service_healthy
+
+  canary:
+    image: qxip/cloki-canary
+    container_name: canary
+    volumes:
+      - ./out:/out
+    entrypoint: /bin/bash
+    command: -c "/usr/bin/loki-canary -addr=${CLOKI_HOST:-cloki}:${CLOKI_PORT:-3100} > /out/canary.log"
+    depends_on:
+      clickhouse1:
+        condition: service_healthy
+
+  promtail:
+    image: grafana/promtail
+    volumes:
+      - ./configs/promtail.yml:/etc/promtail.yml
+      - ./out:/out:ro
+    command: -config.file=/etc/promtail.yml
+    depends_on:
+      clickhouse1:
+        condition: service_healthy
+
+
+#  pastash:
+#    extends:
+#      file: pastash.yml
+#      service: pastash
+#    container_name: pastash
+#    depends_on:
+#      clickhouse1:
+#        condition: service_healthy
+
+  # dummy service which does nothing, but allows to postpone 
+  # 'docker-compose up -d' till all dependecies will go healthy
+  all_services_ready:
+    image: hello-world
+    depends_on:
+      clickhouse1:
+        condition: service_healthy
