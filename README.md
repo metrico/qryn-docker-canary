@@ -30,3 +30,4 @@ docker-compose up
 
 * Watch the canary output for details
 
+![image](https://user-images.githubusercontent.com/1423657/144712675-5111209e-0511-4203-8fbd-466def03cefb.png)
