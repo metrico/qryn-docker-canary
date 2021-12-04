@@ -28,7 +28,7 @@ services:
     volumes:
       - ./out:/out
     entrypoint: /bin/bash
-    command: -c "/usr/bin/loki-canary -addr=${CLOKI_HOST:-cloki}:${CLOKI_PORT:-3100} > /out/canary.log"
+    command: -c "/usr/bin/loki-canary -addr=${CLOKI_HOST:-cloki}:${CLOKI_PORT:-3100} 2>/out/debug.log 1>/out/canary.log"
     depends_on:
       clickhouse1:
         condition: service_healthy
